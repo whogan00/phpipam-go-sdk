@@ -6,9 +6,6 @@ import (
 	"strconv"
 )
 
-// PermissionsType can be a string or array/object in JSON
-type PermissionsType json.RawMessage
-
 // Subnet represents a phpIPAM subnet object with fields matching API response
 type Subnet struct {
 	ID                    int             `json:"id,omitempty"`
@@ -24,7 +21,7 @@ type Subnet struct {
 	VlanID                interface{}     `json:"vlanId,omitempty"`
 	ShowName              int             `json:"showName,omitempty"`
 	Device                interface{}     `json:"device,omitempty"`
-	Permissions           PermissionsType `json:"permissions,omitempty"`
+	Permissions           json.RawMessage `json:"permissions,omitempty"` // Using raw json.RawMessage directly
 	PingSubnet            int             `json:"pingSubnet,omitempty"`
 	DiscoverSubnet        int             `json:"discoverSubnet,omitempty"`
 	ResolveDNS            int             `json:"resolveDNS,omitempty"`
@@ -70,12 +67,12 @@ func (s *Subnet) SetPermissionsString(permissions string) {
 	// Check if the string is already JSON formatted
 	if len(permissions) > 0 && permissions[0] == '{' {
 		// It's already a JSON object, no need for quotes
-		s.Permissions = PermissionsType([]byte(permissions))
+		s.Permissions = json.RawMessage(permissions)
 	} else {
 		// For simple quoted string like "{\"3\":\"1\",\"2\":\"2\"}"
 		// We need to ensure it's treated as a JSON string by wrapping in quotes
 		jsonStr := fmt.Sprintf("%q", permissions)
-		s.Permissions = PermissionsType([]byte(jsonStr))
+		s.Permissions = json.RawMessage(jsonStr)
 	}
 }
 
@@ -85,7 +82,7 @@ func (s *Subnet) SetPermissionsObject(permissions interface{}) error {
 	if err != nil {
 		return err
 	}
-	s.Permissions = PermissionsType(bytes)
+	s.Permissions = bytes
 	return nil
 }
 
@@ -97,14 +94,14 @@ func (s *Subnet) GetPermissionsAsString() (string, error) {
 
 	// Try to unmarshal as a string first
 	var strVal string
-	err := json.Unmarshal([]byte(s.Permissions), &strVal)
+	err := json.Unmarshal(s.Permissions, &strVal)
 	if err == nil {
 		return strVal, nil
 	}
 
 	// If that fails, it might be a map or array that we need to stringify
 	var objVal interface{}
-	err = json.Unmarshal([]byte(s.Permissions), &objVal)
+	err = json.Unmarshal(s.Permissions, &objVal)
 	if err != nil {
 		return "", fmt.Errorf("failed to parse permissions: %w", err)
 	}
@@ -126,14 +123,14 @@ func (s *Subnet) GetPermissionsAsMap() (map[string]string, error) {
 
 	// Try direct unmarshaling to map first
 	var mapVal map[string]string
-	err := json.Unmarshal([]byte(s.Permissions), &mapVal)
+	err := json.Unmarshal(s.Permissions, &mapVal)
 	if err == nil {
 		return mapVal, nil
 	}
 
 	// If that fails, it might be a JSON string that contains a map
 	var strVal string
-	err = json.Unmarshal([]byte(s.Permissions), &strVal)
+	err = json.Unmarshal(s.Permissions, &strVal)
 	if err == nil {
 		// Try to unmarshal the string content as a map
 		err = json.Unmarshal([]byte(strVal), &mapVal)
