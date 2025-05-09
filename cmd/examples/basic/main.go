@@ -11,10 +11,11 @@ import (
 func main() {
 	// Create a new PHPIPAM client
 	client, err := phpipam.New(
-		os.Getenv("PHPIPAM_URL"),       // e.g., "https://ipam.example.com"
-		os.Getenv("PHPIPAM_APP_ID"),    // Application ID configured in phpIPAM
-		os.Getenv("PHPIPAM_USERNAME"),  // phpIPAM username
-		os.Getenv("PHPIPAM_PASSWORD"),  // phpIPAM password
+		os.Getenv("PHPIPAM_URL"),      // e.g., "https://ipam.example.com"
+		os.Getenv("PHPIPAM_APP_ID"),   // Application ID configured in phpIPAM
+		os.Getenv("PHPIPAM_USERNAME"), // phpIPAM username
+		os.Getenv("PHPIPAM_PASSWORD"), // phpIPAM password
+		true,
 	)
 	if err != nil {
 		log.Fatalf("Failed to create PHPIPAM client: %v", err)
@@ -113,4 +114,3 @@ func main() {
 		fmt.Printf("\nCreated new subnet: %s/%s (ID: %s)\n", createdSubnet.Subnet, createdSubnet.Mask, createdSubnet.ID)
 	}
 }
-
