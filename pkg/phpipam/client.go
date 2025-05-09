@@ -3,6 +3,7 @@ package phpipam
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -62,13 +63,29 @@ func NewClient(baseURL, appID, username, password string, insecureTLS bool) (*Cl
 	}
 	parsedURL.Path = path
 
+	// Create a transport with the appropriate TLS configuration
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+	if insecureTLS {
+		// This is the critical part - create a new TLS config that skips verification
+		transport.TLSClientConfig = &tls.Config{
+			InsecureSkipVerify: true,
+		}
+	}
+
+	// Create the HTTP client with the configured transport
+	httpClient := &http.Client{
+		Timeout:   defaultTimeout,
+		Transport: transport,
+	}
+
 	return &Client{
-		BaseURL:    parsedURL,
-		AppID:      appID,
-		Username:   username,
-		Password:   password,
-		HTTPClient: &http.Client{Timeout: defaultTimeout},
-		UserAgent:  "go-phpipam/1.0",
+		BaseURL:     parsedURL,
+		AppID:       appID,
+		Username:    username,
+		Password:    password,
+		HTTPClient:  httpClient,
+		UserAgent:   "go-phpipam/1.0",
+		InsecureTLS: insecureTLS,
 	}, nil
 }
 
