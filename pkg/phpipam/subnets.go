@@ -7,30 +7,30 @@ import (
 
 // Subnet represents a phpIPAM subnet object
 type Subnet struct {
-	ID             int    `json:"id,omitempty"`
-	Subnet         string `json:"subnet"`
-	Mask           string `json:"mask"`
-	SectionID      int    `json:"sectionId,omitempty"`
-	Description    string `json:"description,omitempty"`
-	LinkedSubnet   int    `json:"linked_subnet,omitempty"`
-	VlanID         int    `json:"vlanId,omitempty"`
-	VrfID          int    `json:"vrfId,omitempty"`
-	MasterSubnetID int    `json:"masterSubnetId,omitempty"`
-	NameserverID   int    `json:"nameserverId,omitempty"`
-	ShowName       int    `json:"showName,omitempty"`
-	Permissions    string `json:"permissions,omitempty"`
-	DNSRecursive   int    `json:"DNSrecursive,omitempty"`
-	DNSRecords     int    `json:"DNSrecords,omitempty"`
-	AllowRequests  int    `json:"allowRequests,omitempty"`
-	ScanAgent      int    `json:"scanAgent,omitempty"`
-	PingSubnet     int    `json:"pingSubnet,omitempty"`
-	DiscoverSubnet int    `json:"discoverSubnet,omitempty"`
-	IsFolder       int    `json:"isFolder,omitempty"`
-	IsFull         int    `json:"isFull,omitempty"`
-	State          int    `json:"state,omitempty"`
-	Threshold      int    `json:"threshold,omitempty"`
-	Location       int    `json:"location,omitempty"`
-	EditDate       string `json:"editDate,omitempty"`
+	ID             int      `json:"id,omitempty"`
+	Subnet         string   `json:"subnet"`
+	Mask           string   `json:"mask"`
+	SectionID      int      `json:"sectionId,omitempty"`
+	Description    string   `json:"description,omitempty"`
+	LinkedSubnet   int      `json:"linked_subnet,omitempty"`
+	VlanID         int      `json:"vlanId,omitempty"`
+	VrfID          int      `json:"vrfId,omitempty"`
+	MasterSubnetID int      `json:"masterSubnetId,omitempty"`
+	NameserverID   int      `json:"nameserverId,omitempty"`
+	ShowName       int      `json:"showName,omitempty"`
+	Permissions    []string `json:"permissions,omitempty"`
+	DNSRecursive   int      `json:"DNSrecursive,omitempty"`
+	DNSRecords     int      `json:"DNSrecords,omitempty"`
+	AllowRequests  int      `json:"allowRequests,omitempty"`
+	ScanAgent      int      `json:"scanAgent,omitempty"`
+	PingSubnet     int      `json:"pingSubnet,omitempty"`
+	DiscoverSubnet int      `json:"discoverSubnet,omitempty"`
+	IsFolder       int      `json:"isFolder,omitempty"`
+	IsFull         int      `json:"isFull,omitempty"`
+	State          int      `json:"state,omitempty"`
+	Threshold      int      `json:"threshold,omitempty"`
+	Location       int      `json:"location,omitempty"`
+	EditDate       string   `json:"editDate,omitempty"`
 }
 
 // SubnetUsage represents usage statistics for a subnet
