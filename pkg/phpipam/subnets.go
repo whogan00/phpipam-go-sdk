@@ -7,7 +7,7 @@ import (
 
 // Subnet represents a phpIPAM subnet object
 type Subnet struct {
-	ID             string `json:"id,omitempty"`
+	ID             int    `json:"id,omitempty"`
 	Subnet         string `json:"subnet"`
 	Mask           string `json:"mask"`
 	SectionID      string `json:"sectionId,omitempty"`
@@ -35,9 +35,9 @@ type Subnet struct {
 
 // SubnetUsage represents usage statistics for a subnet
 type SubnetUsage struct {
-	Used      string  `json:"used"`
-	MaxHosts  string  `json:"maxhosts"`
-	Freehosts string  `json:"freehosts"`
+	Used             string  `json:"used"`
+	MaxHosts         string  `json:"maxhosts"`
+	Freehosts        string  `json:"freehosts"`
 	FreehostsPercent float64 `json:"freehosts_percent"`
 }
 
