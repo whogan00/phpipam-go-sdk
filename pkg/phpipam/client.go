@@ -18,14 +18,15 @@ const (
 
 // Client represents a phpIPAM API client
 type Client struct {
-	BaseURL    *url.URL
-	AppID      string
-	Username   string
-	Password   string
-	Token      string
-	TokenExp   time.Time
-	HTTPClient *http.Client
-	UserAgent  string
+	BaseURL     *url.URL
+	AppID       string
+	Username    string
+	Password    string
+	Token       string
+	TokenExp    time.Time
+	HTTPClient  *http.Client
+	UserAgent   string
+	InsecureTLS bool
 }
 
 // Response represents a phpIPAM API response
@@ -45,7 +46,7 @@ type TokenResponse struct {
 }
 
 // NewClient creates a new phpIPAM API client
-func NewClient(baseURL, appID, username, password string) (*Client, error) {
+func NewClient(baseURL, appID, username, password string, insecureTLS bool) (*Client, error) {
 	parsedURL, err := url.Parse(baseURL)
 	if err != nil {
 		return nil, err
@@ -96,7 +97,7 @@ func (c *Client) Authenticate() error {
 	}
 
 	c.Token = tokenResp.Token
-	
+
 	// Parse expiration time
 	expTime, err := time.Parse("2006-01-02 15:04:05", tokenResp.Expires)
 	if err != nil {
@@ -133,10 +134,10 @@ func (c *Client) newRequest(method, endpoint string, body interface{}) (*http.Re
 	if body != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}
-	
+
 	req.Header.Set("User-Agent", c.UserAgent)
 	req.Header.Set("Accept", "application/json")
-	
+
 	// Add token to request if it exists
 	if c.Token != "" {
 		req.Header.Set("token", c.Token)
@@ -175,7 +176,7 @@ func (c *Client) IsTokenValid() bool {
 	if c.Token == "" {
 		return false
 	}
-	
+
 	// Add 5 minute buffer to ensure we don't use a token that's about to expire
 	return time.Now().Add(5 * time.Minute).Before(c.TokenExp)
 }
@@ -233,4 +234,3 @@ func (c *Client) Request(method, endpoint string, body, result interface{}) (*Re
 
 	return c.do(req, result)
 }
-

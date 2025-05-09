@@ -1,6 +1,10 @@
 package phpipam
 
-import "time"
+import (
+	"crypto/tls"
+	"net/http"
+	"time"
+)
 
 // PHPIPAM represents the main PHPIPAM client that encapsulates all service clients
 type PHPIPAM struct {
@@ -18,8 +22,8 @@ type PHPIPAM struct {
 }
 
 // New creates a new PHPIPAM client with all services
-func New(baseURL, appID, username, password string) (*PHPIPAM, error) {
-	client, err := NewClient(baseURL, appID, username, password)
+func New(baseURL, appID, username, password string, insecureTLS bool) (*PHPIPAM, error) {
+	client, err := NewClient(baseURL, appID, username, password, insecureTLS)
 	if err != nil {
 		return nil, err
 	}
@@ -40,10 +44,10 @@ func New(baseURL, appID, username, password string) (*PHPIPAM, error) {
 }
 
 // NewTokenClient creates a new phpIPAM API client using App Code (token) authentication
-// This method is useful when you have a static API key configured in phpIPAM
-func NewTokenClient(baseURL, appID, token string) (*PHPIPAM, error) {
+// This method is useful when you have a static API key configured in phpIP
+func NewTokenClient(baseURL, appID, token string, insecureTLS bool) (*PHPIPAM, error) {
 	// Create a base client without username/password
-	client, err := NewClient(baseURL, appID, "", "")
+	client, err := NewClient(baseURL, appID, "", "", insecureTLS)
 	if err != nil {
 		return nil, err
 	}
@@ -69,6 +73,19 @@ func NewTokenClient(baseURL, appID, token string) (*PHPIPAM, error) {
 		Prefix:    NewPrefixService(client),
 		Search:    NewSearchService(client),
 	}, nil
+}
+
+// SetInsecureTLS configures the client to skip TLS certificate verification
+func (c *Client) SetInsecureTLS(insecure bool) {
+	c.InsecureTLS = insecure
+
+	// Update the transport
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+	transport.TLSClientConfig = &tls.Config{
+		InsecureSkipVerify: insecure,
+	}
+
+	c.HTTPClient.Transport = transport
 }
 
 // Authenticate authenticates with the phpIPAM API
