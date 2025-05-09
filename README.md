@@ -13,7 +13,7 @@ A Go client library for the phpIPAM API.
 ## Installation
 
 ```bash
-go get github.com/yourusername/phpipam-go-sdk
+go get github.com/whogan00/phpipam-go-sdk
 ```
 
 ## Usage
@@ -26,7 +26,7 @@ import (
     "log"
     "os"
 
-    "github.com/yourusername/phpipam-go-sdk"
+    "github.com/whogan00/phpipam-go-sdk"
 )
 
 func main() {
