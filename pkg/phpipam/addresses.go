@@ -222,6 +222,6 @@ func (a *AddressesService) DeleteWithRemoveDNS(id int) error {
 
 // DeleteByIPAndSubnet deletes an address by IP in a specific subnet
 func (a *AddressesService) DeleteByIPAndSubnet(ip string, subnetID int) error {
-	_, err := a.client.Request("DELETE", fmt.Sprintf("addresses/%s/%d", ip, subnetID), nil, nil)
+	_, err := a.client.Request("DELETE", fmt.Sprintf("addresses/%s/%d/", ip, subnetID), nil, nil)
 	return err
 }
