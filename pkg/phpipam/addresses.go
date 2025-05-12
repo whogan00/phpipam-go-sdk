@@ -167,6 +167,7 @@ func (a *AddressesService) GetAddressesByTag(id int) ([]Address, error) {
 // Create creates a new address
 func (a *AddressesService) Create(address *Address) (*Address, error) {
 	var createdAddress Address
+	fmt.Printf("createAddress: %v\n", address)
 	resp, err := a.client.Request("POST", "addresses", address, &createdAddress)
 	fmt.Printf("response: %v\n", resp)
 	if err != nil {
