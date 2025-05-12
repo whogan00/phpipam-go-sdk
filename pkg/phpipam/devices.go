@@ -2,8 +2,8 @@ package phpipam
 
 import (
 	"fmt"
-	"strconv"
 	"net/url"
+	"strconv"
 )
 
 // Device represents a phpIPAM device object
@@ -82,7 +82,7 @@ func (d *DevicesService) Create(device *Device) (*Device, error) {
 
 	// If we got an ID in the response but not in the device data, retrieve the full device
 	if resp.ID != 0 && createdDevice.ID == "" {
-		return d.Get(strconv.Itoa(resp.ID))
+		return d.Get(strconv.Itoa(resp.ID.Int()))
 	}
 
 	return &createdDevice, nil

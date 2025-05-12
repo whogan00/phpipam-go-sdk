@@ -174,7 +174,7 @@ func (a *AddressesService) Create(address *Address) (*Address, error) {
 
 	// If we got an ID in the response but not in the address data, retrieve the full address
 	if resp.ID != 0 && createdAddress.ID == 0 {
-		return a.Get(resp.ID)
+		return a.Get(resp.ID.Int())
 	}
 
 	return &createdAddress, nil
@@ -190,7 +190,7 @@ func (a *AddressesService) CreateFirstFree(subnetID int, address *Address) (*Add
 
 	// If we got an ID in the response but not in the address data, retrieve the full address
 	if resp.ID != 0 && createdAddress.ID == 0 {
-		return a.Get(resp.ID)
+		return a.Get(resp.ID.Int())
 	}
 
 	return &createdAddress, nil

@@ -70,7 +70,7 @@ func (v *VRFsService) Create(vrf *VRF) (*VRF, error) {
 
 	// If we got an ID in the response but not in the VRF data, retrieve the full VRF
 	if resp.ID != 0 && createdVRF.ID == "" {
-		return v.Get(strconv.Itoa(resp.ID))
+		return v.Get(strconv.Itoa(resp.ID.Int()))
 	}
 
 	return &createdVRF, nil

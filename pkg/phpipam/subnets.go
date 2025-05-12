@@ -348,7 +348,7 @@ func (s *SubnetsService) Create(subnet *Subnet) (*Subnet, error) {
 
 	// If we got an ID in the response but not in the subnet data, retrieve the full subnet
 	if resp.ID != 0 && createdSubnet.ID == 0 {
-		return s.Get(resp.ID)
+		return s.Get(resp.ID.Int())
 	}
 
 	return &createdSubnet, nil
@@ -364,7 +364,7 @@ func (s *SubnetsService) CreateFirstSubnet(id int, mask int, subnet *Subnet) (*S
 
 	// If we got an ID in the response but not in the subnet data, retrieve the full subnet
 	if resp.ID != 0 && createdSubnet.ID == 0 {
-		return s.Get(resp.ID)
+		return s.Get(resp.ID.Int())
 	}
 
 	return &createdSubnet, nil
