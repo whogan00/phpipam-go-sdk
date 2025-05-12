@@ -17,16 +17,16 @@ func NewToolsService(client *Client) *ToolsService {
 
 // Subcontroller types for the Tools controller
 const (
-	SubcontrollerTags         = "tags"
-	SubcontrollerDevices      = "devices"
-	SubcontrollerDeviceTypes  = "device_types"
-	SubcontrollerVLANs        = "vlans"
-	SubcontrollerVRFs         = "vrfs"
-	SubcontrollerNameservers  = "nameservers"
-	SubcontrollerScanagents   = "scanagents"
-	SubcontrollerLocations    = "locations"
-	SubcontrollerNAT          = "nat"
-	SubcontrollerRacks        = "racks"
+	SubcontrollerTags        = "tags"
+	SubcontrollerDevices     = "devices"
+	SubcontrollerDeviceTypes = "device_types"
+	SubcontrollerVLANs       = "vlans"
+	SubcontrollerVRFs        = "vrfs"
+	SubcontrollerNameservers = "nameservers"
+	SubcontrollerScanagents  = "scanagents"
+	SubcontrollerLocations   = "locations"
+	SubcontrollerNAT         = "nat"
+	SubcontrollerRacks       = "racks"
 )
 
 // Tag represents a phpIPAM IP address tag
@@ -123,7 +123,7 @@ func (t *ToolsService) CreateIPTag(tag *IPTag) (*IPTag, error) {
 
 	// If we got an ID in the response but not in the tag data, retrieve the full tag
 	if resp.ID != 0 && createdTag.ID == "" {
-		return t.GetIPTag(strconv.Itoa(resp.ID))
+		return t.GetIPTag(strconv.Itoa(resp.ID.Int()))
 	}
 
 	return &createdTag, nil
@@ -177,7 +177,7 @@ func (t *ToolsService) CreateDeviceType(deviceType *DeviceType) (*DeviceType, er
 
 	// If we got an ID in the response but not in the device type data, retrieve the full device type
 	if resp.ID != 0 && createdDeviceType.ID == "" {
-		return t.GetDeviceType(strconv.Itoa(resp.ID))
+		return t.GetDeviceType(strconv.Itoa(resp.ID.Int()))
 	}
 
 	return &createdDeviceType, nil
@@ -266,7 +266,7 @@ func (t *ToolsService) CreateNameserver(nameserver *Nameserver) (*Nameserver, er
 
 	// If we got an ID in the response but not in the nameserver data, retrieve the full nameserver
 	if resp.ID != 0 && createdNameserver.ID == "" {
-		return t.GetNameserver(strconv.Itoa(resp.ID))
+		return t.GetNameserver(strconv.Itoa(resp.ID.Int()))
 	}
 
 	return &createdNameserver, nil
@@ -355,7 +355,7 @@ func (t *ToolsService) CreateLocation(location *Location) (*Location, error) {
 
 	// If we got an ID in the response but not in the location data, retrieve the full location
 	if resp.ID != 0 && createdLocation.ID == "" {
-		return t.GetLocation(strconv.Itoa(resp.ID))
+		return t.GetLocation(strconv.Itoa(resp.ID.Int()))
 	}
 
 	return &createdLocation, nil
@@ -409,7 +409,7 @@ func (t *ToolsService) CreateRack(rack *Rack) (*Rack, error) {
 
 	// If we got an ID in the response but not in the rack data, retrieve the full rack
 	if resp.ID != 0 && createdRack.ID == "" {
-		return t.GetRack(strconv.Itoa(resp.ID))
+		return t.GetRack(strconv.Itoa(resp.ID.Int()))
 	}
 
 	return &createdRack, nil
@@ -470,7 +470,7 @@ func (t *ToolsService) CreateNAT(nat *NAT) (*NAT, error) {
 
 	// If we got an ID in the response but not in the NAT data, retrieve the full NAT
 	if resp.ID != 0 && createdNAT.ID == "" {
-		return t.GetNAT(strconv.Itoa(resp.ID))
+		return t.GetNAT(strconv.Itoa(resp.ID.Int()))
 	}
 
 	return &createdNAT, nil

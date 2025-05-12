@@ -68,7 +68,7 @@ func (l *L2DomainsService) Create(domain *L2Domain) (*L2Domain, error) {
 
 	// If we got an ID in the response but not in the domain data, retrieve the full domain
 	if resp.ID != 0 && createdDomain.ID == "" {
-		return l.Get(strconv.Itoa(resp.ID))
+		return l.Get(strconv.Itoa(resp.ID.Int()))
 	}
 
 	return &createdDomain, nil

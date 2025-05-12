@@ -167,16 +167,14 @@ func (a *AddressesService) GetAddressesByTag(id int) ([]Address, error) {
 // Create creates a new address
 func (a *AddressesService) Create(address *Address) (*Address, error) {
 	var createdAddress Address
-	fmt.Printf("createAddress: %v\n", address)
 	resp, err := a.client.Request("POST", "addresses", address, &createdAddress)
-	fmt.Printf("response: %v\n", resp)
 	if err != nil {
 		return nil, err
 	}
 
 	// If we got an ID in the response but not in the address data, retrieve the full address
 	if resp.ID != 0 && createdAddress.ID == 0 {
-		return a.Get(resp.ID)
+		return a.Get(resp.ID.Int())
 	}
 
 	return &createdAddress, nil
@@ -192,7 +190,7 @@ func (a *AddressesService) CreateFirstFree(subnetID int, address *Address) (*Add
 
 	// If we got an ID in the response but not in the address data, retrieve the full address
 	if resp.ID != 0 && createdAddress.ID == 0 {
-		return a.Get(resp.ID)
+		return a.Get(resp.ID.Int())
 	}
 
 	return &createdAddress, nil

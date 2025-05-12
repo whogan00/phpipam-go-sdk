@@ -7,19 +7,19 @@ import (
 
 // Section represents a phpIPAM section object
 type Section struct {
-	ID              string      `json:"id,omitempty"`
-	Name            string      `json:"name"`
-	Description     string      `json:"description,omitempty"`
-	MasterSection   int         `json:"masterSection,omitempty"`
-	Permissions     string      `json:"permissions,omitempty"`
-	StrictMode      int         `json:"strictMode,omitempty"`
-	SubnetOrdering  string      `json:"subnetOrdering,omitempty"`
-	Order           int         `json:"order,omitempty"`
-	EditDate        string      `json:"editDate,omitempty"`
-	ShowVLAN        int         `json:"showVLAN,omitempty"`
-	ShowVRF         int         `json:"showVRF,omitempty"`
-	ShowSupernetOnly int        `json:"showSupernetOnly,omitempty"`
-	DNS             string      `json:"DNS,omitempty"`
+	ID               string `json:"id,omitempty"`
+	Name             string `json:"name"`
+	Description      string `json:"description,omitempty"`
+	MasterSection    int    `json:"masterSection,omitempty"`
+	Permissions      string `json:"permissions,omitempty"`
+	StrictMode       int    `json:"strictMode,omitempty"`
+	SubnetOrdering   string `json:"subnetOrdering,omitempty"`
+	Order            int    `json:"order,omitempty"`
+	EditDate         string `json:"editDate,omitempty"`
+	ShowVLAN         int    `json:"showVLAN,omitempty"`
+	ShowVRF          int    `json:"showVRF,omitempty"`
+	ShowSupernetOnly int    `json:"showSupernetOnly,omitempty"`
+	DNS              string `json:"DNS,omitempty"`
 }
 
 // CustomField represents a custom field definition
@@ -73,7 +73,7 @@ func (s *SectionsService) Create(section *Section) (*Section, error) {
 
 	// If we got an ID in the response but not in the section data, retrieve the full section
 	if resp.ID != 0 && createdSection.ID == "" {
-		return s.Get(strconv.Itoa(resp.ID))
+		return s.Get(strconv.Itoa(resp.ID.Int()))
 	}
 
 	return &createdSection, nil

@@ -9,6 +9,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -30,12 +31,45 @@ type Client struct {
 	InsecureTLS bool
 }
 
+// ResponseID is a type that can unmarshal from both string and int JSON values
+type ResponseID int
+
+// UnmarshalJSON implements custom unmarshaling for ResponseID
+func (id *ResponseID) UnmarshalJSON(data []byte) error {
+	// Try to unmarshal as int first
+	var intValue int
+	if err := json.Unmarshal(data, &intValue); err == nil {
+		*id = ResponseID(intValue)
+		return nil
+	}
+
+	// If that fails, try to unmarshal as string
+	var stringValue string
+	if err := json.Unmarshal(data, &stringValue); err != nil {
+		return err // Return error if neither int nor string
+	}
+
+	// Convert string to int
+	intVal, err := strconv.Atoi(stringValue)
+	if err != nil {
+		return fmt.Errorf("failed to convert string ID to int: %w", err)
+	}
+
+	*id = ResponseID(intVal)
+	return nil
+}
+
+// Add a Int() helper method to make conversions more readable
+func (id ResponseID) Int() int {
+	return int(id)
+}
+
 // Response represents a phpIPAM API response
 type Response struct {
 	Code    int             `json:"code"`
 	Success bool            `json:"success"`
 	Message string          `json:"message,omitempty"`
-	ID      int             `json:"id,omitempty"`
+	ID      ResponseID      `json:"id,omitempty"`
 	Data    json.RawMessage `json:"data,omitempty"`
 	Time    float64         `json:"time,omitempty"`
 }

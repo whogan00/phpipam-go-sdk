@@ -84,7 +84,7 @@ func (v *VLANsService) Create(vlan *VLAN) (*VLAN, error) {
 
 	// If we got an ID in the response but not in the VLAN data, retrieve the full VLAN
 	if resp.ID != 0 && createdVLAN.ID == "" {
-		return v.Get(strconv.Itoa(resp.ID))
+		return v.Get(strconv.Itoa(resp.ID.Int()))
 	}
 
 	return &createdVLAN, nil
